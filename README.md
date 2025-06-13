@@ -6,7 +6,7 @@ EstudVest é uma aplicação web interativa projetada para ajudar estudantes a p
 * **Geração de Questionários:** Crie questionários dinâmicos com perguntas e alternativas.
 * **Seleção de Alternativas:** Responda às questões selecionando a alternativa correta.
 * **Verificação de Desempenho:** Após o envio, veja quantos acertos você obteve.
-* **Salvar Questionários:** Persista seus questionários gerados (com suas respostas!) no armazenamento local do navegador para revisar mais tarde.
+* **Salvar Questionários:** Salva seus questionários gerados no armazenamento local do navegador para revisar mais tarde.
 * **Revisão Detalhada:** Ao carregar um questionário salvo, visualize suas respostas e as alternativas corretas, com feedback visual claro (verde para acertos, vermelho para erros).
 * **Excluir Questionários Salvos:** Gerencie sua lista de questionários, removendo os que não são mais necessários.
 * **Navegação Intuitiva:** Interface simples e amigável para uma experiência de estudo focada.
