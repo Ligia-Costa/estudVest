@@ -50,7 +50,7 @@ export default function SelecaoOpcoes({
           value={quantidadeQuestoes}
           onChange={(e) => aoMudarQuantidade(Number(e.target.value))}
           min="1"
-          max="20" // Definindo um limite para a quantidade de questões por enquanto
+          max="20" // Limite de 20 questões
           className="w-full p-3 rounded-md border border-gray-300 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300 ease-in-out"
         />
       </div>

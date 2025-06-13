@@ -1,4 +1,3 @@
-// src/app/meus-questionarios/page.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -7,7 +6,7 @@ import { QuestionarioSalvo } from '@/tipos';
 
 export default function PaginaMeusQuestionarios() {
   const [questionarios, setQuestionarios] = useState<QuestionarioSalvo[]>([]);
-  const [estaCarregando, setEstaCarregando] = useState<boolean>(true); // Novo estado de carregamento
+  const [estaCarregando, setEstaCarregando] = useState<boolean>(true); 
   const router = useRouter();
 
   useEffect(() => {
@@ -22,15 +21,11 @@ export default function PaginaMeusQuestionarios() {
     }
   }, []);
 
+  // trecho de src/app/meus-questionarios/page.tsx
   const lidarComVerQuestionario = (questionario: QuestionarioSalvo) => {
-    // Ao visualizar, definimos as questões atuais no localStorage para a página do questionário
-    localStorage.setItem('estudvest_questoes', JSON.stringify(questionario.questoes));
-    // E também o vestibular, se quisermos que apareça corretamente na página do questionário
-    // Se a interface Questao tiver 'vestibular', isso já seria implicito
-    // Mas para garantir:
-    // localStorage.setItem('estudvest_vestibular_atual', questionario.vestibular);
-
-    router.push('/questionario');
+      localStorage.setItem('estudvest_questoes', JSON.stringify(questionario.questoes));
+      localStorage.setItem('estudvest_vestibular_atual', questionario.vestibular); 
+      router.push('/questionario');
   };
 
   const lidarComExcluirQuestionario = (id: string) => {
@@ -39,8 +34,6 @@ export default function PaginaMeusQuestionarios() {
         const questionariosAtualizados = questionarios.filter(q => q.id !== id);
         localStorage.setItem('estudvest_questionarios', JSON.stringify(questionariosAtualizados));
         setQuestionarios(questionariosAtualizados);
-        // Não usamos alert aqui, pois a atualização da UI já é feedback suficiente.
-        // alert('Questionário excluído com sucesso!');
       } catch (error) {
         console.error('Erro ao excluir questionário:', error);
         alert('Ocorreu um erro ao excluir o questionário.');
@@ -57,15 +50,15 @@ export default function PaginaMeusQuestionarios() {
       ) : (
         <div className="w-full max-w-3xl bg-white bg-opacity-10 p-8 rounded-lg shadow-xl backdrop-blur-sm card-animado fade-in animation-delay-100">
           {questionarios.length === 0 ? (
-            <p className="text-xl text-center">Você ainda não tem questionários salvos. Gere um e salve!</p>
+            <p className="text-xl text-center text-black">Você ainda não tem questionários salvos. Gere um e salve!</p>
           ) : (
             <ul className="space-y-6">
               {questionarios.map((questionario, index) => (
-                <li key={questionario.id} className="bg-white bg-opacity-5 p-6 rounded-md flex flex-col md:flex-row justify-between items-start md:items-center shadow-md card-animado fade-in animation-delay-${200 + (index * 50)}"> {/* Adiciona card-animado */}
+                <li key={questionario.id} className="bg-white bg-opacity-5 p-6 rounded-md flex flex-col md:flex-row justify-between items-start md:items-center shadow-md card-animado fade-in animation-delay-${200 + (index * 50)}"> 
                   <div>
-                    <h2 className="text-2xl font-semibold text-blue-300">{questionario.vestibular}</h2>
-                    <p className="text-lg text-gray-200">Criado em: {questionario.dataCriacao}</p>
-                    <p className="text-md text-gray-300">{questionario.questoes.length} questões</p>
+                    <h2 className="text-2xl font-semibold text-blue-500">{questionario.vestibular}</h2>
+                    <p className="text-lg text-black">Criado em: {questionario.dataCriacao}</p>
+                    <p className="text-md text-gray-400">{questionario.questoes.length} questões</p>
                   </div>
                   <div className="mt-4 md:mt-0 flex space-x-3">
                     <button

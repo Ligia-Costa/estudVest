@@ -1,4 +1,3 @@
-// src/app/questionario/page.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -12,22 +11,29 @@ export default function PaginaQuestionario() {
   const [respostasUsuario, setRespostasUsuario] = useState<{ [key: number]: string }>({});
   const [mostrarResultado, setMostrarResultado] = useState<boolean>(false);
   const [notaFinal, setNotaFinal] = useState<number>(0);
-  const [vestibularAtual, setVestibularAtual] = useState<string>('Não Identificado');
+
+  const [vestibularAtual, setVestibularAtual] = useState<string>('Carregando...');
   const [questionarioJaSalvo, setQuestionarioJaSalvo] = useState<boolean>(false);
-  const [feedbackSalvar, setFeedbackSalvar] = useState<string>(''); // Novo estado para feedback
+  const [feedbackSalvar, setFeedbackSalvar] = useState<string>('');
 
   useEffect(() => {
     try {
       const questoesJson = localStorage.getItem('estudvest_questoes');
+
+      const vestibularSalvo = localStorage.getItem('estudvest_vestibular_atual');
+
       if (questoesJson) {
         const parsedQuestoes: Questao[] = JSON.parse(questoesJson);
         setQuestoes(parsedQuestoes);
-        setVestibularAtual(parsedQuestoes[0]?.vestibular || 'Vestibular Não Identificado'); // Tenta pegar do vestibular se a questão tiver
+        
+        setVestibularAtual(vestibularSalvo || 'Vestibular Não Identificado');
 
-        // Verifica se este questionário (com base nas questões atuais) já foi salvo
+        // Verifica se este questionário (com base nas questões atuais E NO VESTIBULAR) já foi salvo
         const questionariosSalvos: QuestionarioSalvo[] = JSON.parse(localStorage.getItem('estudvest_questionarios') || '[]');
         const isCurrentQuestionnaireSaved = questionariosSalvos.some(
-          q => q.questoes.length === parsedQuestoes.length &&
+          // Inclui o nome do vestibular na comparação para ser mais preciso
+          q => q.vestibular === (vestibularSalvo || 'Vestibular Não Identificado') &&
+               q.questoes.length === parsedQuestoes.length &&
                q.questoes.every((q1, idx) =>
                  q1.pergunta === parsedQuestoes[idx].pergunta &&
                  q1.alternativas.every((alt1, altIdx) =>
@@ -49,7 +55,7 @@ export default function PaginaQuestionario() {
       alert('Erro ao carregar o questionário. Tente novamente.');
       router.push('/');
     }
-  }, [router]);
+  }, [router]); 
 
   const lidarComSelecaoAlternativa = (questaoId: number, alternativaTexto: string) => {
     setRespostasUsuario((prev) => ({
@@ -79,14 +85,13 @@ export default function PaginaQuestionario() {
     try {
       const questionariosSalvos: QuestionarioSalvo[] = JSON.parse(localStorage.getItem('estudvest_questionarios') || '[]');
 
-      // ID mais robusto para evitar duplicatas: combina timestamp, vestibular e um hash das perguntas
       const questionHash = JSON.stringify(questoes.map(q => ({p: q.pergunta, a: q.alternativas.map(alt => alt.texto)}))).length;
       const idQuestionario = `${vestibularAtual.replace(/\s/g, '')}-${Date.now()}-${questionHash}`;
       const dataAtual = new Date().toLocaleDateString('pt-BR');
 
       const novoQuestionario: QuestionarioSalvo = {
         id: idQuestionario,
-        vestibular: vestibularAtual,
+        vestibular: vestibularAtual, 
         dataCriacao: dataAtual,
         questoes: questoes,
       };
@@ -95,16 +100,19 @@ export default function PaginaQuestionario() {
       localStorage.setItem('estudvest_questionarios', JSON.stringify(questionariosSalvos));
 
       setQuestionarioJaSalvo(true);
-      setFeedbackSalvar('Salvo!'); // Define o feedback de salvo
+      setFeedbackSalvar('Salvo!');
       alert('Questionário salvo com sucesso!');
     } catch (error) {
       console.error('Erro ao salvar questionário:', error);
-      setFeedbackSalvar('Erro ao salvar!'); // Define o feedback de erro
+      setFeedbackSalvar('Erro ao salvar!');
       alert('Ocorreu um erro ao salvar o questionário.');
     }
   };
 
   const lidarComNovoQuestionario = () => {
+    // Limpa as chaves específicas do questionário atual ao voltar para a home
+    localStorage.removeItem('estudvest_questoes');
+    localStorage.removeItem('estudvest_vestibular_atual'); // LIMPA TAMBÉM O VESTIBULAR ATUAL
     router.push('/');
   };
 
@@ -118,7 +126,7 @@ export default function PaginaQuestionario() {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-8 bg-gradient-to-br from-blue-700 to-purple-700 text-white">
-      <h1 className="text-4xl font-bold mb-6 text-center fade-in">Questionário {vestibularAtual}</h1>
+      <h1 className="text-4xl font-bold mb-6 text-center fade-in text-white">Questionário {vestibularAtual}</h1>
 
       {!mostrarResultado ? (
         <div className="w-full max-w-2xl bg-white bg-opacity-10 p-8 rounded-lg shadow-xl backdrop-blur-sm card-animado fade-in animation-delay-100 text-black">
@@ -160,11 +168,11 @@ export default function PaginaQuestionario() {
         </div>
       ) : (
         <div className="w-full max-w-2xl bg-white bg-opacity-10 p-8 rounded-lg shadow-xl backdrop-blur-sm text-center card-animado fade-in animation-delay-100">
-          <h2 className="text-3xl font-bold mb-6 fade-in">Resultados do Questionário</h2>
-          <p className="text-2xl mb-4 fade-in animation-delay-100">Você acertou <span className="font-bold text-blue-300">{notaFinal}</span> de <span className="font-bold text-purple-300">{questoes.length}</span> questões!</p>
+          <h2 className="text-3xl font-bold mb-6 fade-in text-purple-500">Resultados do Questionário</h2>
+          <p className="text-2xl mb-4 fade-in animation-delay-100 text-black">Você acertou <span className="font-bold text-blue-300">{notaFinal}</span> de <span className="font-bold text-purple-400">{questoes.length}</span> questões!</p>
 
-          <div className="text-left mt-8 fade-in animation-delay-200">
-            <h3 className="text-2xl font-semibold mb-4">Revisão das Questões:</h3>
+          <div className="text-left mt-8 fade-in animation-delay-200 text-white">
+            <h3 className="text-2xl font-semibold mb-4 text-black">Revisão das Questões:</h3>
             {questoes.map((questao, qIndex) => {
               const respostaCorreta = questao.alternativas.find((alt) => alt.correta);
               const respostaDoUsuario = respostasUsuario[questao.id];
@@ -219,7 +227,7 @@ export default function PaginaQuestionario() {
               onClick={lidarComNovoQuestionario}
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg btn-animado focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              Novo Questionário
+              Voltar para a Página Inicial
             </button>
           </div>
         </div>

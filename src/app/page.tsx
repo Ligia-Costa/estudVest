@@ -4,8 +4,8 @@
 import React, { useState } from 'react';
 import SelecaoOpcoes from '@/componentes/SelecaoOpcoes';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { Questao } from '@/tipos';
+import Link from 'next/link';
 
 export default function PaginaInicial() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function PaginaInicial() {
   const [quantidadeQuestoes, setQuantidadeQuestoes] = useState<number>(5);
   const [estaCarregando, setEstaCarregando] = useState<boolean>(false);
 
-  const vestibularesDisponiveis: string[] = ['ENEM', 'FUVEST', 'UNICAMP', 'UNESP'];
+  const vestibularesDisponiveis: string[] = ['ENEM', 'FUVEST', 'UNICAMP', 'UNESP', 'PUC-SP', 'UFMG', 'UFPR', 'UFRJ', 'UFBA', 'UFRGS'];
 
   const lidarComMudancaVestibular = (vestibular: string) => {
     setVestibularSelecionado(vestibular);
@@ -52,11 +52,11 @@ export default function PaginaInicial() {
       const dados = await resposta.json();
       const questoesRecebidas: Questao[] = dados.questoes;
 
-      // Salva as questões e o vestibular no localStorage antes de navegar
       localStorage.setItem('estudvest_questoes', JSON.stringify(questoesRecebidas));
-      localStorage.setItem('estudvest_vestibular_atual', vestibularSelecionado); // <--- Adicionada esta linha!
+      localStorage.setItem('estudvest_vestibular_atual', vestibularSelecionado);
 
       router.push('/questionario');
+
     } catch (erro: any) {
       console.error('Erro ao gerar questionário:', erro.message);
       alert(`Erro: ${erro.message}`);
