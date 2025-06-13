@@ -1,5 +1,3 @@
-// src/tipos/index.ts
-
 export interface Alternativa {
   texto: string;
   correta: boolean;
@@ -23,7 +21,7 @@ export interface Questao {
   alternativas: Alternativa[];
 }
 
-// Nova interface para um questionário completo a ser salvo
+// interface para um questionário completo a ser salvo
 export interface QuestionarioSalvo {
   id: string; // Um ID único para cada questionário (usaremos um timestamp)
   vestibular: string;

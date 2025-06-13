@@ -1,4 +1,3 @@
-// src/componentes/SelecaoOpcoes.tsx
 import React from 'react';
 
 interface SelecaoOpcoesProps {
