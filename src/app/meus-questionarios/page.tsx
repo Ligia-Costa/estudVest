@@ -53,7 +53,7 @@ export default function PaginaMeusQuestionarios() {
             <p className="text-xl text-center text-black">Você ainda não tem questionários salvos. Gere um e salve!</p>
           ) : (
             <ul className="space-y-6">
-              {questionarios.map((questionario, index) => (
+              {questionarios.map((questionario) => (
                 <li key={questionario.id} className="bg-white bg-opacity-5 p-6 rounded-md flex flex-col md:flex-row justify-between items-start md:items-center shadow-md card-animado fade-in animation-delay-${200 + (index * 50)}"> 
                   <div>
                     <h2 className="text-2xl font-semibold text-blue-500">{questionario.vestibular}</h2>
