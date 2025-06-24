@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from '@google/generative-ai';
 
-// Definição das interfaces para tipagem (melhor prática!)
+// Definição das interfaces para tipagem 
 interface Alternativa {
   texto: string;
   correta: boolean;
