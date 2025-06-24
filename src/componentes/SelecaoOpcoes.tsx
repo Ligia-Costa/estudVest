@@ -19,7 +19,7 @@ export default function SelecaoOpcoes({
 }: SelecaoOpcoesProps) {
   return (
     <div className="bg-white bg-opacity-10 p-8 rounded-lg shadow-xl backdrop-blur-sm w-full max-w-md">
-      <h2 className="text-3xl font-semibold mb-6 text-purple-700 text-center">Defina suas preferências</h2>
+      <h2 className="text-3xl font-semibold mb-6 text-purple-700 text-center">Defina suas preferências:</h2>
 
       <div className="mb-6">
         <label htmlFor="vestibular" className="block text-black text-lg font-medium mb-2">

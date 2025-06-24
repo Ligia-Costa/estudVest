@@ -1,4 +1,3 @@
-// src/app/api/gerar-questionario/route.ts
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from '@google/generative-ai';
 
@@ -51,7 +50,7 @@ export async function POST(request: Request) {
     ];
 
     // O prompt para o Gemini: peça as questões no formato JSON
-    const prompt = `Gere ${quantidadeQuestoes} questões de múltipla escolha para o vestibular ${vestibular}. Cada questão deve ter 4 alternativas (A, B, C, D) e apenas uma correta. Inclua a pergunta, as 4 alternativas e qual alternativa está correta. O formato deve ser um array de objetos JSON, onde cada objeto representa uma questão.
+    const prompt = `Gere ${quantidadeQuestoes} questões de múltipla escolha para o vestibular ${vestibular}. Cada questão deve ter 4 alternativas (A, B, C, D) e apenas uma correta. Inclua a pergunta, as 4 alternativas e qual alternativa está correta. Diversifique as questões entre as matérias cobradas no vestibular (coloque pelo menos uma questão de matemática e pelo menos uma questão de português). O formato deve ser um array de objetos JSON, onde cada objeto representa uma questão.
 
     Exemplo de formato JSON esperado:
     [

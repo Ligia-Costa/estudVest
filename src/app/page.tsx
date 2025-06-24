@@ -5,6 +5,8 @@ import SelecaoOpcoes from '@/componentes/SelecaoOpcoes';
 import { useRouter } from 'next/navigation';
 import { Questao } from '@/tipos';
 import Link from 'next/link';
+import ChatFlutuante from '@/componentes/ChatFlutuante';
+import Rodape from '@/componentes/Rodape';
 
 export default function PaginaInicial() {
   const router = useRouter();
@@ -12,7 +14,7 @@ export default function PaginaInicial() {
   const [quantidadeQuestoes, setQuantidadeQuestoes] = useState<number>(5);
   const [estaCarregando, setEstaCarregando] = useState<boolean>(false);
 
-  const vestibularesDisponiveis: string[] = ['ENEM', 'FUVEST', 'UNICAMP', 'UNESP', 'PUC-SP', 'UFMG', 'UFPR', 'UFRJ', 'UFBA', 'UFRGS'];
+  const vestibularesDisponiveis: string[] = ['ENEM', 'FUVEST', 'UNICAMP', 'UNESP', 'PUC-SP', 'UFMG', 'UFPR', 'UFRJ', 'UFBA', 'UFRGS', 'UEPG', 'UEM', 'UFSC', 'UFPE', 'UFRN', 'UFAL', 'UFES', 'UFPB', 'UFMA', 'UFPI', 'PUC-PR'];
 
   const lidarComMudancaVestibular = (vestibular: string) => {
     setVestibularSelecionado(vestibular);
@@ -64,6 +66,8 @@ export default function PaginaInicial() {
     }
   };
 
+  const CHATBOT_URL = "https://chatbot-front-pi.vercel.app/";
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-gradient-to-br from-blue-700 to-purple-700 text-white">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
@@ -94,6 +98,8 @@ export default function PaginaInicial() {
           </button>
         </Link>
       </div>
+      <ChatFlutuante chatbotUrl={CHATBOT_URL} />
+      <Rodape />
     </main>
   );
 }
