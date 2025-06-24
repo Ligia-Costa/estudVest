@@ -93,16 +93,16 @@ export async function POST(request: Request) {
 
     // Se o Gemini não retornar um array, ou retornar algo inesperado, você pode querer mais validações aqui.
     if (!Array.isArray(questoesGeradas) || questoesGeradas.length === 0) {
-        throw new Error('Formato de questões inválido recebido da API do Gemini.');
+      throw new Error('Formato de questões inválido recebido da API do Gemini.');
     }
 
     // Garante que o ID seja sequencial e único
     let currentId = 1;
     const questoesFinalizadas = questoesGeradas.map(questao => {
-        return {
-            ...questao,
-            id: currentId++
-        };
+      return {
+        ...questao,
+        id: currentId++
+      };
     });
 
     return NextResponse.json({
@@ -112,14 +112,47 @@ export async function POST(request: Request) {
       questoes: questoesFinalizadas,
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) { // Agora o tipo é 'unknown'
     console.error('Erro na API Route:', error);
-    // Tenta capturar erros específicos da API do Gemini
-    if (error.response && error.response.text) {
-      console.error('Resposta de erro da API do Gemini:', error.response.text());
+
+    // Variável para armazenar a mensagem de erro a ser enviada ao cliente
+    let errorMessage = 'Ocorreu um erro ao gerar o questionário. Verifique a chave da API e tente novamente.';
+
+    // Tenta capturar erros específicos da API do Gemini e refinar a mensagem
+    if (error instanceof Error) {
+      // Se for uma instância de Error (o mais comum), pegamos a mensagem
+      errorMessage = `Ocorreu um erro ao gerar o questionário: ${error.message}. Verifique a chave da API e tente novamente.`;
+      // Você pode logar mais detalhes do erro aqui, como error.stack
     }
+
+    // Se o erro pode vir de uma resposta de API (como de um cliente HTTP),
+    // ele geralmente terá uma estrutura de objeto com 'response'.
+    if (typeof error === 'object' && error !== null && 'response' in error) {
+      // Usamos uma asserção de tipo para dizer ao TypeScript a estrutura esperada
+      const apiError = error as { response?: { text?: () => string } };
+
+      if (apiError.response && typeof apiError.response === 'object' && 'text' in apiError.response && typeof apiError.response.text === 'function') {
+        try {
+          const responseText = apiError.response.text();
+          console.error('Resposta de erro da API do Gemini:', responseText);
+          // Podemos tentar usar a resposta da API na mensagem para o cliente,
+          // mas é bom ter cuidado para não expor informações sensíveis.
+          // Por exemplo, podemos resumir a mensagem ou verificar se ela é amigável.
+          errorMessage = `Ocorreu um erro ao gerar o questionário. Detalhes da API: ${responseText}. Verifique a chave da API e tente novamente.`;
+        } catch (textParseError) {
+          // Em caso de falha ao chamar text(), ou se o texto não for parsable
+          console.error('Erro ao obter texto da resposta da API:', textParseError);
+          // Mantemos a mensagem genérica ou a do 'Error' se foi capturada
+        }
+      }
+    } else if (typeof error === 'string') {
+      // Se o erro for uma string simples
+      errorMessage = `Ocorreu um erro ao gerar o questionário: ${error}. Verifique a chave da API e tente novamente.`;
+    }
+
+    // Retorna a resposta JSON com a mensagem de erro refinada
     return NextResponse.json(
-      { erro: `Ocorreu um erro ao gerar o questionário: ${error.message}. Verifique a chave da API e tente novamente.` },
+      { erro: errorMessage },
       { status: 500 }
     );
   }

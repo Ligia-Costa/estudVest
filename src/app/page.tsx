@@ -58,9 +58,22 @@ export default function PaginaInicial() {
 
       router.push('/questionario');
 
-    } catch (erro: any) {
-      console.error('Erro ao gerar questionário:', erro.message);
-      alert(`Erro: ${erro.message}`);
+    } catch (error: unknown) {
+      // Use a temporary variable for the error message
+      let errorMessage = 'Ocorreu um erro desconhecido.';
+
+      // Check if the error is an instance of Error
+      if (error instanceof Error) {
+        // If it is, then 'error.message' is safe to access
+        errorMessage = error.message;
+      } else if (typeof error === 'string') {
+        // If the error is a simple string
+        errorMessage = error;
+      }
+      // You could add more specific checks here if you expect other error shapes
+
+      console.error('Erro ao gerar questionário:', errorMessage);
+      alert(`Erro: ${errorMessage}`);
     } finally {
       setEstaCarregando(false);
     }
