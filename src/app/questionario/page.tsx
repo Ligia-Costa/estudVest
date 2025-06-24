@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Questao, Alternativa, QuestionarioSalvo } from '@/tipos';
+import { Questao, QuestionarioSalvo } from '@/tipos';
 
 export default function PaginaQuestionario() {
   const router = useRouter();
