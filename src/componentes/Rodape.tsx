@@ -49,7 +49,7 @@ export default function Rodape() {
 
           {/* LinkedIn */}
           <Link
-            href="www.linkedin.com/in/lígia-costa-16080118b" 
+            href="https://www.linkedin.com/in/l%C3%ADgia-costa-16080118b" 
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
