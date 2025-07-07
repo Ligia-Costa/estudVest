@@ -21,10 +21,10 @@ export default function PaginaInicial() {
   };
 
   const lidarComMudancaQuantidade = (quantidade: number) => {
-    if (quantidade > 0 && quantidade <= 20) {
+    if (quantidade > 0 && quantidade <= 90) {
       setQuantidadeQuestoes(quantidade);
-    } else if (quantidade > 20) {
-      setQuantidadeQuestoes(20);
+    } else if (quantidade > 90) {
+      setQuantidadeQuestoes(90);
     } else {
       setQuantidadeQuestoes(1);
     }
@@ -111,7 +111,6 @@ export default function PaginaInicial() {
           </button>
         </Link>
       </div>
-      <ChatFlutuante chatbotUrl={CHATBOT_URL} />
       <Rodape />
     </main>
   );
