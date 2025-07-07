@@ -23,7 +23,7 @@ export default function Rodape() {
         <div className="flex space-x-6 mt-4">
           {/* Instagram */}
           <Link 
-            href="https://instagram.com/seu-instagram" // ⚠️ SUBSTITUA PELA URL DO SEU INSTAGRAM
+            href="https://www.instagram.com/liiih.costa" 
             target="_blank" 
             rel="noopener noreferrer"
             aria-label="Instagram"
@@ -36,7 +36,7 @@ export default function Rodape() {
 
           {/* GitHub */}
           <Link
-            href="https://github.com/Ligia-Costa" // ⚠️ SUBSTITUA PELA URL DO SEU GITHUB
+            href="https://github.com/Ligia-Costa" 
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
@@ -49,7 +49,7 @@ export default function Rodape() {
 
           {/* LinkedIn */}
           <Link
-            href="www.linkedin.com/in/lígia-costa-16080118b" // 
+            href="www.linkedin.com/in/lígia-costa-16080118b" 
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
